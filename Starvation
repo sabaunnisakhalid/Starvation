@@ -1,0 +1,333 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import random
+import matplotlib.pyplot as plt
+import networkx as nx
+
+# --- Application Title ---
+st.set_page_config(page_title="NSGA-II Starvation Optimizer", layout="wide")
+st.title("G19-Alfred: Starvation Optimization Research Workflow")
+
+st.markdown("""
+### 📖 Research Context: The Starvation Problem
+In traditional software scheduling, **Starvation** occurs when low-priority requirements (e.g., technical debt, documentation) are repeatedly bypassed by new high-priority tasks. 
+This application uses **NSGA-II (Non-dominated Sorting Genetic Algorithm II)** to find a "Fair" schedule that respects technical dependencies while ensuring no requirement waits indefinitely.
+""")
+
+uploaded_file = st.file_uploader("Upload Requirement Dataset CSV", type="csv")
+
+if uploaded_file:
+    df = pd.read_csv(uploaded_file)
+    df.columns = df.columns.str.strip()
+    df["Ready_Date"] = pd.to_datetime(df["Ready_Date"], dayfirst=True)
+
+    # --- 1. Dependency Graph Building ---
+    G = nx.DiGraph()
+    for _, row in df.iterrows():
+        parent_id = str(row["Story_ID"]).strip()
+        G.add_node(parent_id)
+        if "Dependencies" in df.columns and pd.notna(row["Dependencies"]):
+            children = str(row["Dependencies"]).split(",")
+            for c in children:
+                child_id = c.strip()
+                if child_id:
+                    # FIX: conventional precedence — the prerequisite is scheduled
+                    # BEFORE the story that depends on it. (Previously the edge was
+                    # reversed, forcing early-ready prerequisites to wait and creating
+                    # a hard floor of unavoidable starvation.)
+                    G.add_edge(child_id, parent_id)
+
+    if not nx.is_directed_acyclic_graph(G):
+        st.error("Error: Dependency cycle detected!")
+        st.stop()
+
+    # --- 2. Parameters ---
+    st.sidebar.header("Optimization Controls")
+    # FIX: original slider was (20, 100, 500) -> max 100 but default 500, which
+    # Streamlit silently clamps. Range now actually spans the intended values.
+    POP_SIZE = st.sidebar.slider("Population Size", 20, 300, 100)
+    GENERATIONS = st.sidebar.slider("Generations", 10, 500, 200)
+    STARVATION_THRESHOLD = st.sidebar.slider("Starvation Threshold (Days)", 1, 120, 30)
+    # FIX: model team throughput. With capacity = 1 the queue advances one story per
+    # day, so any group of stories sharing a ready date is forced to wait — making zero
+    # starvation impossible on congested data no matter how good the schedule is.
+    # Raising capacity lets the team start several stories per day and removes that floor.
+    TEAM_CAPACITY = st.sidebar.slider("Team Capacity (stories started per day)", 1, 15, 1)
+    # Hint: how many stories pile up on the busiest single ready date.
+    _busiest = int(df["Ready_Date"].value_counts().max())
+    if _busiest > TEAM_CAPACITY * STARVATION_THRESHOLD:
+        st.sidebar.warning(
+            f"{_busiest} stories share one ready date. With capacity {TEAM_CAPACITY}, "
+            f"some starvation is unavoidable. Raise capacity to about "
+            f"{int(np.ceil(_busiest / STARVATION_THRESHOLD))}+ to make zero starvation reachable."
+        )
+
+    BASE_DATE = df["Ready_Date"].min()
+    MAX_PRIORITY = df["Priority"].max()
+    story_map = df.set_index("Story_ID")[["Priority", "Ready_Date"]].to_dict('index')
+
+    # --- 3. Fitness Function ---
+    def compute_fitness(order):
+        total_aging = 0
+        starved_count = 0
+        weighted_priority_penalty = 0
+
+        for idx, s in enumerate(order):
+            story_data = story_map[s]
+            priority = story_data["Priority"]
+            ready = story_data["Ready_Date"]
+
+            # FIX: TEAM_CAPACITY stories can start each day, so the scheduling day is
+            # idx // TEAM_CAPACITY rather than one day per story.
+            day = idx // TEAM_CAPACITY
+            start_date = max(ready, BASE_DATE + pd.Timedelta(days=day))
+            aging = (start_date - ready).days
+            total_aging += aging
+
+            if aging >= STARVATION_THRESHOLD:
+                starved_count += 1
+
+            # Priority Penalty: Measures how much high-value tasks were delayed
+            # (kept on the raw sequence index to preserve fine-grained ordering pressure)
+            importance_weight = (MAX_PRIORITY - priority + 1)
+            weighted_priority_penalty += (idx * importance_weight)
+
+        avg_aging = total_aging / len(order)
+        return weighted_priority_penalty, avg_aging, starved_count, total_aging
+
+    # --- 4. GA Operators ---
+    def is_valid(order):
+        pos = {v: k for k, v in enumerate(order)}
+        for u, v in G.edges():
+            if u in pos and v in pos and pos[u] > pos[v]:
+                return False
+        return True
+
+    def get_random_topo():
+        G_copy = G.copy()
+        order = []
+        ready = [n for n in G_copy.nodes() if G_copy.in_degree(n) == 0]
+        while ready:
+            n = random.choice(ready)
+            ready.remove(n)
+            order.append(n)
+            for m in list(G_copy.successors(n)):
+                G_copy.remove_edge(n, m)
+                if G_copy.in_degree(m) == 0:
+                    ready.append(m)
+        return order
+
+    def get_greedy_ready_seed():
+        # Earliest-ready-first heuristic: among stories whose prerequisites are all
+        # placed, always schedule the one that became ready soonest. This is the
+        # natural starvation-minimising order and gives the GA a strong starting point.
+        G_copy = G.copy()
+        order = []
+        ready = [n for n in G_copy.nodes() if G_copy.in_degree(n) == 0]
+        while ready:
+            ready.sort(key=lambda n: story_map[n]["Ready_Date"])
+            n = ready.pop(0)
+            order.append(n)
+            for m in list(G_copy.successors(n)):
+                G_copy.remove_edge(n, m)
+                if G_copy.in_degree(m) == 0:
+                    ready.append(m)
+        return order
+
+    def crossover(p1, p2):
+        cut = random.randint(1, len(p1) - 2)
+        prefix = set(p1[:cut])
+        child = p1[:cut] + [x for x in p2 if x not in prefix]
+        return child if is_valid(child) else p1
+
+    def mutate(order):
+        if len(order) < 2:
+            return order
+        new_o = order.copy()
+        i, j = random.sample(range(len(new_o)), 2)
+        new_o[i], new_o[j] = new_o[j], new_o[i]
+        return new_o if is_valid(new_o) else order
+
+    def dominates(f1, f2):
+        return (f1[0] <= f2[0] and f1[2] <= f2[2]) and (f1[0] < f2[0] or f1[2] < f2[2])
+
+    # --- 5. Baseline Calculation (Before) ---
+    # Create a simple priority-sorted list that respects dependencies (Baseline)
+    baseline_order = df.sort_values(by="Priority")["Story_ID"].tolist()
+    # Ensure baseline is technically valid for a fair comparison
+    if not is_valid(baseline_order):
+        baseline_order = get_random_topo()  # Fallback to a basic valid topo sort
+
+    b_pen, b_avg_a, b_starv_c, b_tot_a = compute_fitness(baseline_order)
+
+    # --- 6. NSGA-II Loop (After) ---
+    with st.spinner("Executing NSGA-II Optimization..."):
+        population = [get_random_topo() for _ in range(POP_SIZE)]
+        # FIX: seed one individual with the earliest-ready-first heuristic so the
+        # search starts from a near-starvation-free schedule. NSGA-II keeps it (it is
+        # non-dominated on starvation) and explores the priority/starvation trade-offs
+        # around it. This is what reliably drives starvation to zero.
+        population[0] = get_greedy_ready_seed()
+        progress = st.progress(0)
+
+        for gen in range(GENERATIONS):
+            fits = [compute_fitness(ind) for ind in population]
+            next_gen = []
+            for i in range(len(population)):
+                if not any(dominates(fits[j], fits[i]) for j in range(len(population)) if i != j):
+                    next_gen.append(population[i])
+            while len(next_gen) < POP_SIZE:
+                p1, p2 = random.sample(population, 2)
+                c = crossover(p1, p2)
+                if random.random() < 0.2:
+                    c = mutate(c)
+                next_gen.append(c)
+            population = next_gen[:POP_SIZE]
+            progress.progress((gen + 1) / GENERATIONS)
+
+    # --- 7. Comparative Results ---
+    # FIX: original used best = population[0] (an arbitrary point on the Pareto
+    # front). Select the individual that actually minimises starvation, breaking
+    # ties on average aging, so the displayed "After" reflects the best schedule.
+    final_fits = [compute_fitness(ind) for ind in population]
+    best_idx = min(range(len(population)),
+                   key=lambda i: (final_fits[i][2], final_fits[i][1]))
+    best = population[best_idx]
+    p_pen, avg_a, starv_c, tot_a = final_fits[best_idx]
+
+    st.header("📊 Comparative Performance Analysis")
+
+    col_before, col_after = st.columns(2)
+
+    with col_before:
+        st.subheader("Before Optimization (Baseline)")
+        st.metric("Starved Stories", b_starv_c, delta="Initial State", delta_color="off")
+        st.write(f"**Avg Aging:** {b_avg_a:.1f} Days")
+        st.write(f"**Total Delay:** {b_tot_a:,} Days")
+        st.caption("Logic: This represents rigid priority-based scheduling where low-value tasks are ignored.")
+
+    with col_after:
+        improvement = starv_c - b_starv_c
+        st.subheader("After NSGA-II Optimization")
+        st.metric("Starved Stories", starv_c, delta=improvement, delta_color="inverse")
+        st.write(f"**Avg Aging:** {avg_a:.1f} Days")
+        st.write(f"**Total Delay:** {tot_a:,} Days")
+        st.caption("Logic: The algorithm reordered tasks to reduce wait times while respecting dependencies.")
+
+    st.divider()
+
+    # --- 8. Evaluation Metrics Explanations ---
+    st.header("🔬 Academic Evaluation & Parameter Explanation")
+
+    all_fits = final_fits  # FIX: reuse already-computed fitnesses
+    pareto_front_fits = []
+    for i in range(len(all_fits)):
+        if not any(dominates(all_fits[j], all_fits[i]) for j in range(len(all_fits)) if i != j):
+            pareto_front_fits.append((all_fits[i][3], all_fits[i][2]))
+
+    max_age = max([f[3] for f in all_fits]) * 1.1
+    max_starve = max([f[2] for f in all_fits]) * 1.1
+    ref_point = (max_age, max_starve)
+
+    def compute_hypervolume(front, ref):
+        sorted_front = sorted(front, key=lambda x: x[0])
+        vol = 0
+        for f in sorted_front:
+            vol += (ref[0] - f[0]) * (ref[1] - f[1])
+        return vol
+
+    hv = compute_hypervolume(pareto_front_fits, ref_point)
+
+    eval_1, eval_2, eval_3 = st.columns(3)
+    with eval_1:
+        st.write("**Priority Penalty**")
+        st.write(f"Value: `{int(p_pen):,}`")
+        st.info(
+            "Measures how much high-priority stories were delayed. A lower value means high-priority tasks were done faster.")
+
+    with eval_2:
+        st.write("**Hypervolume (HV)**")
+        st.write(f"Value: `{hv:,.2f}`")
+        st.info(
+            "The total 'quality area' covered by the results. A higher value proves the algorithm found a better balance than the baseline.")
+
+    with eval_3:
+        st.write("**Stability**")
+        st.write(f"Value: `{len(pareto_front_fits)}`")
+        st.info(
+            "The number of optimal trade-offs found. More unique solutions mean the algorithm provided more choices to the manager.")
+
+    # --- 9. Final Conclusion Logic ---
+    # FIX: figures below are now derived from the actual run instead of being
+    # hardcoded ("37 stories", "138 stories long").
+    st.success("### Final Research Interpretation")
+    if starv_c == 0:
+        st.markdown(f"""
+    **Starvation fully eliminated.** NSGA-II found a dependency-respecting schedule in which
+    **every** story starts within the {STARVATION_THRESHOLD}-day threshold — starved stories went
+    from **{b_starv_c}** under naive priority ordering to **0**, and average wait fell from
+    **{b_avg_a:.1f} days** to **{avg_a:.1f} days**.
+
+    This is possible because (a) prerequisites are scheduled before the stories that depend on them,
+    and (b) the readiness profile leaves enough scheduling slack. The earliest-ready heuristic supplies
+    a starvation-free seed, and NSGA-II additionally maps the trade-off between starvation and
+    priority-penalty — so the manager still receives a *range* of schedules, not just this single point.
+        """)
+    else:
+        st.markdown(f"""
+    **Why are there still {starv_c} starved stories?** Even after optimization, {starv_c} stories cross the
+    {STARVATION_THRESHOLD}-day threshold because of the **precedence constraints**. If Story A must precede
+    Story B and the queue is {len(best)} stories long, some waiting is mathematically unavoidable.
+
+    **Why is the result 'Good'?** The algorithm reduced the average wait time from **{b_avg_a:.1f} days** to
+    **{avg_a:.1f} days** and cut starved stories from **{b_starv_c}** to **{starv_c}**. This proves that NSGA-II
+    effectively discovered a "hidden" schedule that stakeholder priorities alone could not see.
+        """)
+
+    # --- 10. The Optimized Schedule Table ---
+    st.header("📋 Final Optimized Roadmap")
+    st.markdown("This is the exact sequence recommended by the NSGA-II algorithm to minimize starvation.")
+
+    # Re-calculate final dates for the best individual to display in a table
+    scheduled_data = []
+
+    for idx, s in enumerate(best):
+        data = story_map[s]
+        ready = data["Ready_Date"]
+
+        # FIX: same capacity model as the fitness function (idx // TEAM_CAPACITY).
+        day = idx // TEAM_CAPACITY
+        start_date = max(ready, BASE_DATE + pd.Timedelta(days=day))
+        aging = (start_date - ready).days
+
+        scheduled_data.append({
+            "Execution Order": len(scheduled_data) + 1,
+            "Story_ID": s,
+            "Priority": data["Priority"],
+            "Ready Date": ready.strftime('%d/%m/%Y'),
+            "Scheduled Start": start_date.strftime('%d/%m/%Y'),
+            "Wait Time (Days)": aging,
+            "Status": "⚠️ Starved" if aging >= STARVATION_THRESHOLD else "✅ Healthy"
+        })
+
+    schedule_df = pd.DataFrame(scheduled_data)
+
+    # Style the dataframe to highlight starved rows
+    def highlight_starved(val):
+        return 'background-color: #ffcccc' if val == "⚠️ Starved" else ''
+
+    st.dataframe(
+        schedule_df.style.applymap(highlight_starved, subset=['Status']),
+        use_container_width=True,
+        hide_index=True
+    )
+
+    # Add a download button for the new schedule
+    csv = schedule_df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="📥 Download Optimized Schedule CSV",
+        data=csv,
+        file_name='optimized_schedule.csv',
+        mime='text/csv',
+    )

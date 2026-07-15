@@ -1,0 +1,161 @@
+Priority,Story_ID,Story_Text,Dependencies,Created_Date,Ready_Date,Start_Date
+1,Story 141,"As a receptionist, I want to register emergency patients quickly so that treatment is not delayed.","Story 144, Story 120",20/06/2026,02/07/2026,06/07/2026
+2,Story 13,"As a patient, I want to update my contact information so that records remain accurate.",Story 96,15/12/2026,21/12/2026,24/12/2026
+3,Story 45,"As a patient, I want to view appointment history so that I can track visits.",Story 136,22/06/2026,13/07/2026,20/07/2026
+4,Story 87,"As a patient, I want to view insurance coverage details.",,25/07/2026,28/07/2026,02/08/2026
+5,Story 113,"As an administrator, I want laboratory performance reports.","Story 90, Story 29",01/09/2026,13/09/2026,17/09/2026
+6,Story 42,"As a patient, I want appointment reminders so that I do not miss visits.",,03/11/2026,24/11/2026,27/11/2026
+7,Story 44,"As a receptionist, I want to check patients out after consultations.",,06/01/2027,21/01/2027,26/01/2027
+8,Story 46,"As an administrator, I want appointment utilization reports so that efficiency can be measured.",Story 148,24/12/2026,08/01/2027,13/01/2027
+9,Story 72,"As a patient, I want notifications when results are available.",,30/12/2026,08/01/2027,09/01/2027
+10,Story 81,"As an administrator, I want pharmacy inventory reports.",Story 132,29/09/2026,04/10/2026,09/10/2026
+11,Story 82,"As a patient, I want medication reminders.",,28/10/2026,18/11/2026,24/11/2026
+12,Story 12,"As a receptionist, I want to register new patients so that they can receive treatment.",,08/06/2026,18/06/2026,19/06/2026
+13,Story 31,"As a doctor, I want to update consultation notes so that patient records remain accurate.","Story 24, Story 40",29/11/2026,05/12/2026,12/12/2026
+14,Story 18,"As a patient, I want to view my visit history so that I can track my treatments.",,16/08/2026,28/08/2026,30/08/2026
+15,Story 23,"As a patient, I want to view my insurance information so that I understand my coverage.",,28/07/2026,03/08/2026,09/08/2026
+16,Story 35,"As an administrator, I want doctor performance reports so that service quality can be evaluated.",,28/10/2026,18/11/2026,20/11/2026
+17,Story 71,"As an administrator, I want laboratory workload reports.",Story 94,13/08/2026,17/08/2026,20/08/2026
+18,Story 98,"As a patient, I want virtual appointment reminders.",,18/06/2026,02/07/2026,08/07/2026
+19,Story 43,"As a receptionist, I want to check patients in for appointments.",,08/06/2026,28/06/2026,29/06/2026
+20,Story 110,"As an administrator, I want appointment trend reports.",,29/06/2026,15/07/2026,17/07/2026
+21,Story 105,"As a patient, I want notifications when test results are available.",Story 128,28/09/2026,12/10/2026,14/10/2026
+22,Story 114,"As an administrator, I want pharmacy inventory analytics.",Story 7,28/09/2026,03/10/2026,05/10/2026
+23,Story 102,"As a patient, I want medication reminders.",,25/12/2026,13/01/2027,18/01/2027
+24,Story 101,"As a patient, I want appointment reminders via SMS and email.",,24/12/2026,06/01/2027,07/01/2027
+25,Story 40,"As a receptionist, I want to schedule appointments on behalf of patients.",,04/11/2026,07/11/2026,09/11/2026
+26,Story 1,"As a user, I want to register an account so that I can access the system.",,08/08/2026,24/08/2026,25/08/2026
+27,Story 2,"As a user, I want to log in securely so that unauthorized users cannot access my data.",,27/12/2026,14/01/2027,18/01/2027
+28,Story 3,"As a user, I want to reset my password so that I can regain access if I forget it.",Story 51,02/09/2026,08/09/2026,12/09/2026
+29,Story 4,"As a user, I want multi-factor authentication so that my account is more secure.",,07/01/2027,23/01/2027,29/01/2027
+30,Story 5,"As an administrator, I want role-based access control so that users only access authorized features.",Story 121,14/10/2026,28/10/2026,02/11/2026
+31,Story 6,"As an administrator, I want user account activation and deactivation so that access can be controlled.",,05/06/2026,22/06/2026,26/06/2026
+32,Story 7,"As a user, I want automatic session timeout so that my account remains secure.",,24/09/2026,01/10/2026,04/10/2026
+33,Story 8,"As an administrator, I want audit logs so that all system activities can be tracked.",,14/07/2026,30/07/2026,31/07/2026
+34,Story 9,"As a user, I want to change my password periodically so that security is maintained.",,19/11/2026,27/11/2026,29/11/2026
+35,Story 10,"As an administrator, I want encrypted storage of sensitive data so that patient privacy is protected.",Story 70,20/09/2026,09/10/2026,12/10/2026
+36,Story 11,"As a patient, I want to create my profile so that healthcare providers can identify me.","Story 129, Story 19",07/01/2027,18/01/2027,24/01/2027
+37,Story 14,"As a patient, I want to upload identification documents so that verification is easier.","Story 53, Story 90",13/08/2026,02/09/2026,05/09/2026
+38,Story 15,"As a patient, I want to view my profile information so that I can verify my records.",,26/10/2026,13/11/2026,19/11/2026
+39,Story 16,"As a receptionist, I want to search patient records so that I can quickly locate information.",,19/06/2026,06/07/2026,13/07/2026
+40,Story 17,"As a patient, I want to manage emergency contacts so that providers can contact family members.",Story 42,28/11/2026,14/12/2026,18/12/2026
+41,Story 19,"As a patient, I want to receive notifications about profile updates so that I remain informed.","Story 13, Story 9",01/12/2026,22/12/2026,23/12/2026
+42,Story 20,"As an administrator, I want duplicate patient detection so that records are not repeated.",,09/09/2026,20/09/2026,26/09/2026
+43,Story 21,"As a patient, I want to upload medical documents so that providers can review them.",,31/05/2026,13/06/2026,15/06/2026
+44,Story 22,"As a receptionist, I want to merge duplicate patient records so that information remains consistent.",,27/07/2026,06/08/2026,09/08/2026
+45,Story 24,"As a receptionist, I want to print patient registration details so that paperwork is simplified.",,26/11/2026,01/12/2026,08/12/2026
+46,Story 25,"As an administrator, I want patient demographic reports so that organizational planning is easier.",,22/11/2026,03/12/2026,10/12/2026
+47,Story 26,"As a doctor, I want to create and update my professional profile so that patients can view my expertise.",Story 105,22/10/2026,08/11/2026,14/11/2026
+48,Story 27,"As an administrator, I want to manage doctor accounts so that staffing information remains current.","Story 149, Story 83",01/10/2026,11/10/2026,16/10/2026
+49,Story 28,"As a doctor, I want to set my availability schedule so that appointments can be booked.",Story 134,19/11/2026,06/12/2026,12/12/2026
+50,Story 29,"As a doctor, I want to block unavailable dates so that scheduling conflicts are avoided.",,20/07/2026,10/08/2026,17/08/2026
+51,Story 30,"As a doctor, I want to view assigned patients so that I can prepare for consultations.",,17/12/2026,01/01/2027,03/01/2027
+52,Story 32,"As an administrator, I want to assign doctors to departments so that resources are organized.",,31/08/2026,13/09/2026,17/09/2026
+53,Story 33,"As a doctor, I want to view upcoming appointments so that I can manage my workload.","Story 133, Story 136",30/06/2026,03/07/2026,04/07/2026
+54,Story 34,"As a doctor, I want to receive notifications for appointment changes so that I stay informed.",Story 156,18/07/2026,05/08/2026,10/08/2026
+55,Story 36,"As a patient, I want to search for available doctors so that I can book appointments.",,16/07/2026,29/07/2026,31/07/2026
+56,Story 37,"As a patient, I want to book appointments online so that scheduling is convenient.",,28/12/2026,05/01/2027,11/01/2027
+57,Story 38,"As a patient, I want to cancel appointments so that unused slots become available.",,08/12/2026,26/12/2026,28/12/2026
+58,Story 39,"As a patient, I want to reschedule appointments so that I can adjust my plans.",,09/01/2027,18/01/2027,21/01/2027
+59,Story 41,"As a doctor, I want to approve appointment requests when required.",,08/11/2026,22/11/2026,29/11/2026
+60,Story 47,"As a patient, I want waiting-list functionality so that I can get earlier openings.",,23/12/2026,03/01/2027,05/01/2027
+61,Story 48,"As a doctor, I want to create patient medical records so that health information is stored.",Story 84,21/08/2026,03/09/2026,04/09/2026
+62,Story 49,"As a doctor, I want to view complete patient history so that I can make informed decisions.",,29/05/2026,09/06/2026,10/06/2026
+63,Story 50,"As a nurse, I want to record patient vital signs so that conditions are monitored.",,07/01/2027,18/01/2027,20/01/2027
+64,Story 51,"As a doctor, I want to document diagnoses so that treatments are tracked.",,18/07/2026,07/08/2026,14/08/2026
+65,Story 52,"As a doctor, I want to record treatment plans so that care is coordinated.","Story 34, Story 108",15/08/2026,18/08/2026,21/08/2026
+66,Story 53,"As a doctor, I want to update allergy information so that risks are minimized.",,24/07/2026,12/08/2026,17/08/2026
+67,Story 54,"As a patient, I want to view my health records so that I stay informed.",Story 136,14/06/2026,23/06/2026,29/06/2026
+68,Story 55,"As a patient, I want to download my records so that I can share them externally.",Story 120,14/07/2026,19/07/2026,26/07/2026
+69,Story 56,"As a nurse, I want to add care notes so that treatment progress is documented.",,13/11/2026,23/11/2026,28/11/2026
+70,Story 57,"As a doctor, I want to upload medical images so that diagnostic information is centralized.",,06/08/2026,22/08/2026,25/08/2026
+71,Story 58,"As a patient, I want access logs showing who viewed my records.",,03/01/2027,21/01/2027,25/01/2027
+72,Story 59,"As an administrator, I want audit trails for record changes.",Story 126,03/12/2026,23/12/2026,24/12/2026
+73,Story 60,"As a doctor, I want problem lists for chronic conditions.",Story 33,29/06/2026,09/07/2026,13/07/2026
+74,Story 61,"As a doctor, I want vaccination history tracking.",,21/10/2026,08/11/2026,14/11/2026
+75,Story 62,"As a patient, I want health summaries generated automatically.",Story 48,25/08/2026,12/09/2026,15/09/2026
+76,Story 63,"As a doctor, I want to order laboratory tests electronically.",Story 36,14/07/2026,31/07/2026,06/08/2026
+77,Story 64,"As a lab technician, I want to receive test requests automatically.",Story 33,15/07/2026,18/07/2026,22/07/2026
+78,Story 65,"As a lab technician, I want to record specimen collection details.",,23/11/2026,28/11/2026,01/12/2026
+79,Story 66,"As a lab technician, I want to track sample status.",,13/08/2026,25/08/2026,30/08/2026
+80,Story 67,"As a lab technician, I want to upload test results.","Story 106, Story 80",30/10/2026,09/11/2026,14/11/2026
+81,Story 68,"As a doctor, I want to review laboratory results.","Story 27, Story 121",28/10/2026,12/11/2026,16/11/2026
+82,Story 69,"As a patient, I want to view my lab reports online.","Story 128, Story 106",06/10/2026,16/10/2026,20/10/2026
+83,Story 70,"As a lab technician, I want abnormal result alerts.",Story 146,23/09/2026,05/10/2026,06/10/2026
+84,Story 73,"As a doctor, I want to create electronic prescriptions.",,29/07/2026,19/08/2026,24/08/2026
+85,Story 74,"As a pharmacist, I want to receive prescriptions digitally.",,18/10/2026,01/11/2026,02/11/2026
+86,Story 75,"As a pharmacist, I want to verify prescription validity.",,30/05/2026,17/06/2026,21/06/2026
+87,Story 76,"As a pharmacist, I want to dispense medications and update inventory.",,22/11/2026,12/12/2026,18/12/2026
+88,Story 77,"As a pharmacist, I want stock alerts for low inventory.",,28/11/2026,17/12/2026,20/12/2026
+89,Story 78,"As a patient, I want to view active prescriptions.",Story 117,13/09/2026,27/09/2026,02/10/2026
+90,Story 79,"As a patient, I want to request prescription refills.",,24/05/2026,09/06/2026,12/06/2026
+91,Story 80,"As a pharmacist, I want medication interaction alerts.",,16/10/2026,05/11/2026,06/11/2026
+92,Story 83,"As a patient, I want to view my bills.",,26/08/2026,08/09/2026,09/09/2026
+93,Story 84,"As a patient, I want to pay bills online.",,30/07/2026,13/08/2026,15/08/2026
+94,Story 85,"As a receptionist, I want to generate invoices.","Story 35, Story 68",06/11/2026,23/11/2026,29/11/2026
+95,Story 86,"As an accountant, I want to track payments received.",,03/07/2026,14/07/2026,21/07/2026
+96,Story 88,"As a receptionist, I want to verify insurance eligibility.",,03/09/2026,15/09/2026,22/09/2026
+97,Story 89,"As an accountant, I want to process refunds.",,18/06/2026,29/06/2026,04/07/2026
+98,Story 90,"As an administrator, I want revenue reports.",Story 94,29/07/2026,08/08/2026,13/08/2026
+99,Story 91,"As a patient, I want downloadable billing statements.",,23/10/2026,29/10/2026,30/10/2026
+100,Story 92,"As an accountant, I want outstanding payment reports.",,16/10/2026,25/10/2026,01/11/2026
+101,Story 93,"As a patient, I want to schedule virtual consultations.",,10/09/2026,23/09/2026,29/09/2026
+102,Story 94,"As a patient, I want to join video appointments securely.",,20/07/2026,26/07/2026,02/08/2026
+103,Story 95,"As a doctor, I want to conduct video consultations.",,22/08/2026,11/09/2026,14/09/2026
+104,Story 96,"As a patient, I want to upload documents before virtual visits.",,19/11/2026,27/11/2026,02/12/2026
+105,Story 97,"As a doctor, I want to share consultation summaries electronically.",,03/06/2026,12/06/2026,13/06/2026
+106,Story 99,"As a doctor, I want virtual visit notes saved automatically.",,20/08/2026,29/08/2026,05/09/2026
+107,Story 100,"As an administrator, I want telemedicine usage reports.",,25/10/2026,12/11/2026,19/11/2026
+108,Story 103,"As a doctor, I want notifications for urgent lab results.",,15/12/2026,26/12/2026,28/12/2026
+109,Story 104,"As a patient, I want alerts when prescriptions are ready.",,20/12/2026,10/01/2027,14/01/2027
+110,Story 106,"As an administrator, I want configurable notification templates.",,25/09/2026,14/10/2026,19/10/2026
+111,Story 107,"As a doctor, I want system announcements.",,14/10/2026,26/10/2026,01/11/2026
+112,Story 108,"As a patient, I want secure messaging with providers.",,21/07/2026,27/07/2026,31/07/2026
+113,Story 109,"As an administrator, I want patient volume reports.",Story 69,15/10/2026,24/10/2026,27/10/2026
+114,Story 111,"As an administrator, I want revenue analytics dashboards.",Story 121,10/10/2026,22/10/2026,24/10/2026
+115,Story 112,"As an administrator, I want doctor productivity reports.",,16/12/2026,26/12/2026,31/12/2026
+116,Story 115,"As an administrator, I want department management functionality.",Story 3,16/09/2026,30/09/2026,04/10/2026
+117,Story 116,"As an administrator, I want configurable system settings.",Story 121,11/10/2026,19/10/2026,25/10/2026
+118,Story 117,"As an administrator, I want data backup and recovery capabilities.",Story 3,12/09/2026,24/09/2026,01/10/2026
+119,Story 118,"As an administrator, I want compliance monitoring reports.",,30/10/2026,02/11/2026,06/11/2026
+120,Story 119,"As an administrator, I want retention policies for medical records.",,11/08/2026,31/08/2026,01/09/2026
+121,Story 120,"As an administrator, I want consent management tracking so that patient permissions are recorded.",Story 136,22/06/2026,29/06/2026,03/07/2026
+122,Story 121,"As a nurse, I want to view my assigned patients so that I can manage my workload.",,24/09/2026,05/10/2026,08/10/2026
+123,Story 122,"As a nurse, I want to update patient care plans so that treatment is properly documented.","Story 152, Story 33",04/07/2026,08/07/2026,12/07/2026
+124,Story 123,"As a nurse, I want to record medication administration details so that compliance is maintained.",,13/07/2026,17/07/2026,20/07/2026
+125,Story 124,"As a nurse, I want to receive alerts for critical patient conditions so that urgent action can be taken.","Story 7, Story 132",19/09/2026,09/10/2026,12/10/2026
+126,Story 125,"As a nurse, I want to document patient observations so that doctors can review progress.",,10/10/2026,22/10/2026,28/10/2026
+127,Story 126,"As a nurse, I want to record intake and output measurements so that patient status can be monitored.",,10/11/2026,17/11/2026,18/11/2026
+128,Story 127,"As a nurse, I want to schedule nursing procedures so that patient care is organized.",Story 64,16/07/2026,03/08/2026,10/08/2026
+129,Story 128,"As a nurse, I want to view pending physician orders so that treatments are executed promptly.",,02/10/2026,08/10/2026,10/10/2026
+130,Story 129,"As a nurse, I want to hand over patient notes to the next shift so that continuity of care is maintained.",,29/12/2026,01/01/2027,04/01/2027
+131,Story 130,"As a nursing supervisor, I want nursing workload reports so that staffing can be optimized.",,03/08/2026,24/08/2026,28/08/2026
+132,Story 131,"As an administrator, I want to manage hospital wards so that patient accommodation is organized.",,28/06/2026,10/07/2026,16/07/2026
+133,Story 132,"As a receptionist, I want to admit patients into wards so that inpatient treatment can begin.",,03/09/2026,21/09/2026,25/09/2026
+134,Story 133,"As a nurse, I want to assign beds to admitted patients so that occupancy is tracked.",Story 21,30/05/2026,17/06/2026,20/06/2026
+135,Story 134,"As a doctor, I want to transfer patients between wards so that care requirements are met.",Story 158,17/11/2026,04/12/2026,10/12/2026
+136,Story 135,"As a nurse, I want to view bed availability so that admissions can be planned.",,30/08/2026,12/09/2026,16/09/2026
+137,Story 136,"As an administrator, I want ward occupancy reports so that capacity can be monitored.",,13/06/2026,21/06/2026,28/06/2026
+138,Story 137,"As a receptionist, I want to discharge patients so that inpatient episodes are closed.",,12/12/2026,16/12/2026,23/12/2026
+139,Story 138,"As a patient, I want to receive discharge summaries so that I understand follow-up care.",,03/08/2026,14/08/2026,19/08/2026
+140,Story 139,"As a doctor, I want to prescribe inpatient treatments so that care can continue during admission.",,27/12/2026,14/01/2027,15/01/2027
+141,Story 140,"As an administrator, I want bed utilization analytics so that resources are optimized.",,17/06/2026,23/06/2026,27/06/2026
+142,Story 142,"As a nurse, I want to triage emergency patients so that critical cases receive priority.",,27/08/2026,01/09/2026,02/09/2026
+143,Story 143,"As a doctor, I want to view triage levels so that treatment priorities are clear.",,09/07/2026,24/07/2026,27/07/2026
+144,Story 144,"As a nurse, I want to record emergency interventions so that care history is maintained.",,27/05/2026,14/06/2026,17/06/2026
+145,Story 145,"As a doctor, I want emergency alerts for critical patients so that immediate action can be taken.",Story 52,28/08/2026,02/09/2026,05/09/2026
+146,Story 146,"As an administrator, I want emergency department statistics so that performance can be evaluated.",Story 3,07/09/2026,28/09/2026,29/09/2026
+147,Story 147,"As a doctor, I want access to previous emergency visits so that treatment decisions are informed.",Story 154,11/12/2026,15/12/2026,22/12/2026
+148,Story 148,"As a nurse, I want real-time monitoring of emergency patients so that deterioration is detected quickly.",,30/11/2026,07/12/2026,11/12/2026
+149,Story 149,"As an administrator, I want average waiting-time reports so that service quality can be improved.","Story 142, Story 130",12/09/2026,19/09/2026,26/09/2026
+150,Story 150,"As a patient, I want emergency visit summaries so that I can review the care received.",,14/10/2026,04/11/2026,09/11/2026
+151,Story 151,"As a store manager, I want to record medical supply inventory so that stock levels are accurate.",,07/12/2026,19/12/2026,26/12/2026
+152,Story 152,"As a pharmacist, I want to request inventory replenishment so that shortages are avoided.",,22/06/2026,27/06/2026,28/06/2026
+153,Story 153,"As an administrator, I want inventory approval workflows so that purchases are controlled.","Story 25, Story 19",17/12/2026,27/12/2026,02/01/2027
+154,Story 154,"As a store manager, I want supplier management functionality so that procurement is organized.","Story 26, Story 76",07/12/2026,13/12/2026,20/12/2026
+155,Story 155,"As an administrator, I want purchase order tracking so that deliveries can be monitored.",Story 113,01/10/2026,21/10/2026,26/10/2026
+156,Story 156,"As a store manager, I want stock expiry alerts so that expired items are not used.",,08/07/2026,24/07/2026,28/07/2026
+157,Story 157,"As an administrator, I want equipment maintenance schedules so that assets remain operational.",Story 12,11/07/2026,21/07/2026,25/07/2026
+158,Story 158,"As a technician, I want to log equipment maintenance activities so that service history is preserved.",,26/10/2026,14/11/2026,15/11/2026
+159,Story 159,"As an administrator, I want asset utilization reports so that equipment investments can be optimized.",Story 153,15/12/2026,30/12/2026,01/01/2027
+160,Story 160,"As an administrator, I want inventory consumption analytics so that future demand can be forecasted.",,02/09/2026,19/09/2026,24/09/2026
